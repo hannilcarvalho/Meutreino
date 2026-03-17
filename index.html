@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Treino</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e293b;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #334155;
+            --accent: #ef4444;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        header {
+            text-align: center;
+            padding: 15px 0;
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Container das Abas */
+        .tabs-container {
+            position: sticky;
+            top: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 5px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 0;
+            border: none;
+            background: none;
+            font-weight: bold;
+            color: #94a3b8;
+            cursor: pointer;
+            border-bottom: 4px solid transparent;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        /* Aba Ativa */
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: #eff6ff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px 80px 15px;
+        }
+
+        /* Lógica de exibição */
+        .workout-content {
+            display: none; /* Escondido por padrão */
+        }
+
+        .workout-content.active {
+            display: block; /* Só mostra o que tiver a classe active */
+        }
+
+        .workout-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        h2 { border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; color: var(--primary); }
+
+        .exercise-item {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 15px 0;
+        }
+
+        .ex-name { font-weight: 700; display: block; margin-bottom: 5px; }
+        .ex-details { display: flex; justify-content: space-between; font-size: 0.9rem; }
+        .tag { background: #fee2e2; color: #b91c1c; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+        .interval { color: var(--accent); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<header><h1>TREINO</h1></header>
+
+<div class="tabs-container">
+    <button class="tab-btn active" onclick="showWorkout('treinoA', this)">A</button>
+    <button class="tab-btn" onclick="showWorkout('treinoB', this)">B</button>
+    <button class="tab-btn" onclick="showWorkout('treinoC', this)">C</button>
+    <button class="tab-btn" onclick="showWorkout('treinoD', this)">D</button>
+    <button class="tab-btn" onclick="showWorkout('treinoE', this)">E</button>
+</div>
+
+<div class="container">
+    
+    <div id="treinoA" class="workout-content active">
+        <div class="workout-card">
+            <h2>PEITO E TRÍCEPS</h2>
+            <div class="exercise-item"><span class="ex-name">Supino inclinado halteres</span><div class="ex-details"><span>2x12 + 2x8 <span class="tag">Pesado</span></span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Supino reto barra</span><div class="ex-details"><span>4x12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Voador</span><div class="ex-details"><span>3x12 (2s contração)</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Crossover baixo</span><div class="ex-details"><span>3x12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Paralelas</span><div class="ex-details"><span>3x máximo</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Tríceps testa halter</span><div class="ex-details"><span>3x12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Tríceps corda</span><div class="ex-details"><span>2x12 + 1x10 <span class="tag">Drop</span></span><span class="interval">1m30</span></div></div>
+        </div>
+    </div>
+
+    <div id="treinoB" class="workout-content">
+        <div class="workout-card">
+            <h2>COSTAS E BÍCEPS</h2>
+            <div class="exercise-item"><span class="ex-name">Barra fixa pronada</span><div class="ex-details"><span>40 reps totais</span><span class="interval">90s</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Remada curvada</span><div class="ex-details"><span>2x12 + 2x8 <span class="tag">Pesado</span></span><span class="interval">Nec.</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Puxador triângulo</span><div class="ex-details"><span>3x15</span><span class="interval">1m</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Pulldown</span><div class="ex-details"><span>4x12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Remada baixa aberta</span><div class="ex-details"><span>3x10 + <span class="tag">Drop</span></span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Rosca alternada</span><div class="ex-details"><span>3x12</span><span class="interval">1m</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Rosca Scott máquina</span><div class="ex-details"><span>3x12</span><span class="interval">1m30</span></div></div>
+        </div>
+    </div>
+
+    <div id="treinoC" class="workout-content">
+        <div class="workout-card">
+            <h2>PERNA (ANTERIOR)</h2>
+            <div class="exercise-item"><span class="ex-name">Cadeira adutora</span><div class="ex-details"><span>3x15</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Agachamento hack</span><div class="ex-details"><span>3x10-12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Leg 45°</span><div class="ex-details"><span>2x12 + 2x8</span><span class="interval">Nec.</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Cadeira extensora</span><div class="ex-details"><span>3x15 + <span class="tag">Drop</span></span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Panturrilha em pé/sentada</span><div class="ex-details"><span>3x falha</span><span class="interval">1m30</span></div></div>
+        </div>
+    </div>
+
+    <div id="treinoD" class="workout-content">
+        <div class="workout-card">
+            <h2>OMBROS E BRAÇOS</h2>
+            <div class="exercise-item"><span class="ex-name">Desenvolvimento halteres</span><div class="ex-details"><span>2x12 + 2x6-8</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Elevação lateral halter</span><div class="ex-details"><span>3x15 + <span class="tag">Drop</span></span><span class="interval">Nec.</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Elevação lateral máquina</span><div class="ex-details"><span>3x12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Crucifixo inverso / Face pull</span><div class="ex-details"><span>3x15</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Tríceps francês polia</span><div class="ex-details"><span>3x12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Rosca martelo</span><div class="ex-details"><span>3x12</span><span class="interval">1m30</span></div></div>
+        </div>
+    </div>
+
+    <div id="treinoE" class="workout-content">
+        <div class="workout-card">
+            <h2>POSTERIOR E GLÚTEO</h2>
+            <div class="exercise-item"><span class="ex-name">Levantamento terra</span><div class="ex-details"><span>3x6-8</span><span class="interval">Nec.</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Mesa flexora</span><div class="ex-details"><span>4x12</span><span class="interval">1m30</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Elevação pélvica</span><div class="ex-details"><span>3x12</span><span class="interval">Nec.</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Cadeira abdutora</span><div class="ex-details"><span>3x13</span><span class="interval">1m</span></div></div>
+            <div class="exercise-item"><span class="ex-name">Afundo halteres</span><div class="ex-details"><span>3x12 / perna</span><span class="interval">1m</span></div></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showWorkout(id, btn) {
+        // 1. Esconder todos os treinos
+        const contents = document.querySelectorAll('.workout-content');
+        contents.forEach(c => c.classList.remove('active'));
+
+        // 2. Desativar todos os botões
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+
+        // 3. Mostrar o treino clicado
+        document.getElementById(id).classList.add('active');
+
+        // 4. Ativar o botão clicado
+        btn.classList.add('active');
+
+        // 5. Voltar ao topo
+        window.scrollTo(0, 0);
+    }
+</script>
+
+</body>
+</html>
