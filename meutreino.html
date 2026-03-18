@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treino</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #38bdf8;
+            --accent: #f472b6;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --success: #4ade80;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .tabs-container {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            max-width: 500px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 5px 0;
+            z-index: 1000;
+            border-bottom: 1px solid #334155;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .workout-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .workout-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin: 10px 0 20px 0;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .exercise-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .ex-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .ex-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .ex-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .obs {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Treino</h1>
+</header>
+
+<div class="tabs-container">
+    <button class="tab-btn active" onclick="showWorkout('treinoA', this)">A</button>
+    <button class="tab-btn" onclick="showWorkout('treinoB', this)">B</button>
+    <button class="tab-btn" onclick="showWorkout('treinoC', this)">C</button>
+    <button class="tab-btn" onclick="showWorkout('treinoD', this)">D</button>
+    <button class="tab-btn" onclick="showWorkout('treinoE', this)">E</button>
+</div>
+
+<div class="container">
+    
+    <div id="treinoA" class="workout-content active">
+        <h2>Treino A - Peito</h2>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Supino inclinado halteres</span><span class="tag">Pesado</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">2x12 + 2x8</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Supino reto barra</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">4x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Voador</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+            <div class="obs">Obs: 2s de contração</div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Crossover baixo</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Paralelas</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x Máximo</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Tríceps testa halter</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Tríceps corda</span><span class="tag">Drop</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">2x12 + 1x10</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="treinoB" class="workout-content">
+        <h2>Treino B - Costas</h2>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Barra fixa pronada</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Meta</span><span class="info-value">40 reps totais</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">90s</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Remada curvada</span><span class="tag">Pesado</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">2x12 + 2x8</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">Nec.</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Puxador triângulo</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x15</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Pulldown</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">4x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Remada baixa aberta</span><span class="tag">Drop</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x10</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Rosca alternada</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Rosca Scott máquina</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Encolhimento ombros</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x15</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">Nec.</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="treinoC" class="workout-content">
+        <h2>Treino C - Perna (Anterior)</h2>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Cadeira adutora</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x15</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Agachamento hack</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x10-12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Leg 45°</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">2x12 + 2x8</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">Nec.</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Cadeira extensora</span><span class="tag">Drop</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x15</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Panturrilha em pé</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x Falha</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Panturrilha sentada</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x Falha</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="treinoD" class="workout-content">
+        <h2>Treino D - Ombros</h2>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Desenvolvimento halteres</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">2x12 + 2x6-8</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Elevação lateral halter</span><span class="tag">Drop</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x15</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">Nec.</span></div>
+            </div>
+            <div class="obs">Drop 10-10-10</div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Elevação lateral máquina</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Crucifixo inverso</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x15</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Face pull</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x15</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Tríceps francês polia</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Rosca martelo</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="treinoE" class="workout-content">
+        <h2>Treino E - Posterior</h2>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Levantamento terra</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x6-8</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">Nec.</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Mesa flexora</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">4x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m30</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Elevação pélvica</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">Nec.</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Cadeira abdutora</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x13</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m</span></div>
+            </div>
+        </div>
+        <div class="exercise-card">
+            <div class="ex-header"><span class="ex-name">Afundo halteres</span></div>
+            <div class="ex-info">
+                <div class="info-item"><span class="info-label">Séries</span><span class="info-value">3x12 por perna</span></div>
+                <div class="info-item"><span class="info-label">Intervalo</span><span class="info-value">1m</span></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showWorkout(id, btn) {
+        const contents = document.querySelectorAll('.workout-content');
+        contents.forEach(c => c.classList.remove('active'));
+
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        
+        // Suaviza a rolagem para o topo quando troca de aba
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
+
+</body>
+</html>
