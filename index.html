@@ -304,6 +304,72 @@ h2{font-family:'Syne',sans-serif;font-size:.72rem;color:var(--txt-dim);text-tran
   [data-theme="light"] #toast{background:rgba(246,249,255,0.99)}
 }
 
+/* ── TEMPLATES MODAL ── */
+.tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.tpl-card{
+  background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;
+  padding:14px 12px;cursor:pointer;text-align:left;
+  transition:border-color .2s,background .2s,transform .18s;
+  font-family:'Space Grotesk',sans-serif;
+}
+.tpl-card:hover{border-color:var(--primary);background:var(--primary-d);transform:translateY(-2px)}
+.tpl-card-icon{font-size:1.6rem;margin-bottom:6px}
+.tpl-card-name{font-size:.82rem;font-weight:700;color:var(--txt)}
+.tpl-card-count{font-size:.68rem;color:var(--txt-dim);margin-top:2px}
+
+/* ── DRAG AND DROP ── */
+.exercise-card.drag-over{
+  border-color:var(--primary)!important;
+  box-shadow:0 0 0 2px var(--primary),0 8px 32px rgba(56,189,248,.25)!important;
+}
+.exercise-card.dragging{
+  opacity:.4!important;transform:scale(.97)!important;
+  cursor:grabbing!important;
+}
+/* Alça de drag — só visível no modo edição */
+.drag-handle{
+  display:none;align-items:center;justify-content:center;
+  color:var(--txt-dim);cursor:grab;padding:4px;
+  border-radius:6px;transition:color .2s,background .2s;
+  touch-action:none;min-width:20px;
+}
+.drag-handle:hover{color:var(--primary);background:var(--primary-d)}
+.drag-handle:active{cursor:grabbing}
+.edit-mode .drag-handle{display:flex}
+
+/* ── WEIGHT HISTORY MODAL ── */
+.wh-modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);
+  z-index:3500;align-items:center;justify-content:center;backdrop-filter:blur(8px);
+}
+.wh-modal-box{
+  background:var(--surface2);border:1px solid var(--border);border-radius:26px;
+  padding:28px;max-width:92%;width:420px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55);
+  animation:modalIn .28s cubic-bezier(.34,1.56,.64,1);
+  max-height:85vh;overflow-y:auto;
+}
+.wh-chart{
+  width:100%;height:120px;position:relative;
+  margin:16px 0 8px;overflow:visible;
+}
+.wh-chart svg{width:100%;height:100%;overflow:visible}
+.wh-list{display:flex;flex-direction:column;gap:6px;margin-top:14px;max-height:200px;overflow-y:auto}
+.wh-entry{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(0,0,0,.12);border-radius:10px;padding:8px 12px;
+  font-size:.8rem;
+}
+.wh-entry-date{color:var(--txt-dim)}
+.wh-entry-val{font-weight:800;color:var(--success)}
+.wh-entry-val.wh-pr{color:var(--gold)}
+.wh-empty{text-align:center;color:var(--txt-dim);font-size:.82rem;padding:20px 0}
+.wh-del-btn{
+  background:none;border:none;color:var(--txt-dim);cursor:pointer;
+  font-size:.8rem;padding:2px 6px;border-radius:6px;transition:color .2s,background .2s;
+}
+.wh-del-btn:hover{color:var(--danger);background:rgba(248,113,113,.12)}
+
 /* ── DESKTOP ── */
 @media(min-width:1024px){
   body{padding-bottom:0}
@@ -318,8 +384,7 @@ h2{font-family:'Syne',sans-serif;font-size:.72rem;color:var(--txt-dim);text-tran
   .tab-btn{text-align:left;padding:12px 20px;font-size:.92rem;border-radius:var(--r-sm)}
   .tab-btn::after{display:none!important}
   .tab-btn.active{background:linear-gradient(135deg,var(--primary),#60a5fa);color:white;box-shadow:0 6px 22px rgba(56,189,248,.35);border-radius:var(--r-sm)}
-  .tab-controls{display:flex!important;padding:6px 0 0;background:transparent;justify-content:flex-start}
-  .btn-add-tab{width:100%;padding:10px 20px;border-radius:var(--r-sm);font-size:.83rem;justify-content:flex-start}
+  .tab-controls{display:none!important}
   .tab-btn-wrapper .tab-suggested-dot{display:none!important}
   .tab-btn-wrapper.suggested .tab-btn::after{content:'HOJE';font-size:.52rem;font-weight:800;background:var(--gold);color:#060c18;padding:2px 7px;border-radius:20px;margin-left:8px;vertical-align:middle;display:inline-block!important;width:auto;height:auto;position:static;background-clip:initial;-webkit-background-clip:initial}
   .tab-btn-wrapper.suggested .tab-btn.active::after{display:inline-block!important}
@@ -343,6 +408,7 @@ h2{font-family:'Syne',sans-serif;font-size:.72rem;color:var(--txt-dim);text-tran
   <div class="desktop-side-actions desktop-only">
     <button onclick="fabEdit()" id="desktop-edit-btn"><i class="ph-bold ph-gear"></i> Modo Edição</button>
     <button onclick="toggleTheme()"><i class="ph-bold ph-sun-dim"></i> Mudar Tema</button>
+    <button onclick="openSyncModal()" class="btn-sync-desktop"><i class="ph-bold ph-share-network"></i> Sincronizar</button>
     <button onclick="exportData()"><i class="ph-bold ph-download-simple"></i> Exportar Backup</button>
     <button onclick="document.getElementById('import-file').click()"><i class="ph-bold ph-upload-simple"></i> Importar Backup</button>
     <button onclick="exportPDF()" style="color:var(--accent)"><i class="ph-bold ph-file-pdf"></i> Baixar Ficha PDF</button>
@@ -352,7 +418,7 @@ h2{font-family:'Syne',sans-serif;font-size:.72rem;color:var(--txt-dim);text-tran
 <div id="tabs-wrapper">
   <div class="tabs-container" id="tabs-list"></div>
   <div class="tab-controls">
-    <button class="btn-add-tab" onclick="addTab()"><i class="ph-bold ph-plus"></i> Nova Aba</button>
+    <button class="btn-add-tab" onclick="openTemplatesModal()"><i class="ph-bold ph-magic-wand"></i> Nova Aba</button>
   </div>
 </div>
 
@@ -363,7 +429,7 @@ h2{font-family:'Syne',sans-serif;font-size:.72rem;color:var(--txt-dim);text-tran
 
 <div class="action-bar-desktop desktop-only">
   <button onclick="openSyncModal()" style="color:var(--primary);border-color:rgba(56,189,248,.28)"><i class="ph-bold ph-share-network"></i> Sincronizar</button>
-  <button onclick="addTab()" style="color:var(--primary)"><i class="ph-bold ph-plus"></i> Nova Aba</button>
+  <button onclick="openTemplatesModal()" style="color:var(--primary)"><i class="ph-bold ph-magic-wand"></i> Nova Aba</button>
   <button onclick="fabAdd()" style="color:var(--primary)"><i class="ph-bold ph-plus-circle"></i> Novo Exercício</button>
   <button onclick="fabReset()"><i class="ph-bold ph-arrows-counter-clockwise"></i> Limpar Hoje</button>
   <button onclick="openHistory()" style="background:linear-gradient(135deg,var(--primary),#60a5fa);color:white;border:none"><i class="ph-bold ph-calendar"></i> Frequência</button>
@@ -394,12 +460,45 @@ h2{font-family:'Syne',sans-serif;font-size:.72rem;color:var(--txt-dim);text-tran
     <div class="fab-item" onclick="toggleTheme()"><i class="ph-bold ph-moon"></i> Mudar Tema</div>
     <div class="fab-item" onclick="fabReset()"><i class="ph-bold ph-arrows-counter-clockwise"></i> Limpar Treino</div>
     <div class="fab-item" onclick="fabEdit()" id="edit-fab-text"><i class="ph-bold ph-gear"></i> Modo Edição</div>
+    <div class="fab-item" onclick="openTemplatesModal()"><i class="ph-bold ph-magic-wand"></i> Nova Aba</div>
     <div class="fab-item" onclick="fabAdd()" style="color:var(--primary)"><i class="ph-bold ph-plus"></i> Novo Exercício</div>
   </div>
   <button class="fab-btn" id="fab-btn" onclick="toggleFab()"><i class="ph-bold ph-plus"></i></button>
 </div>
 
-<!-- SYNC MODAL -->
+<!-- TEMPLATES MODAL -->
+<div class="modal-overlay" id="templates-modal">
+  <div class="modal-content" style="width:420px;text-align:left;max-height:90vh;overflow-y:auto">
+    <h3 style="margin-top:0;color:var(--txt);font-family:'Syne',sans-serif;text-align:center">
+      <i class="ph-bold ph-magic-wand" style="color:var(--primary)"></i> Escolha um Template
+    </h3>
+    <p style="font-size:.78rem;color:var(--txt-dim);margin:0 0 4px;text-align:center">Selecione uma estrutura pronta para começar</p>
+    <div class="tpl-grid" id="tpl-grid"></div>
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <button class="modal-btn modal-btn-cancel" onclick="closeTemplatesModal()">Cancelar</button>
+      <button class="modal-btn modal-btn-confirm" onclick="useBlankTab()"><i class="ph-bold ph-plus"></i> Aba em Branco</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEIGHT HISTORY MODAL -->
+<div class="wh-modal-overlay" id="wh-modal">
+  <div class="wh-modal-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div>
+        <h3 id="wh-modal-title" style="margin:0;color:var(--txt);font-family:'Syne',sans-serif;font-size:1rem"></h3>
+        <p id="wh-modal-pr" style="margin:4px 0 0;font-size:.74rem;color:var(--gold);font-weight:700"></p>
+      </div>
+      <button onclick="closeWhModal()" style="background:rgba(255,255,255,.07);border:none;color:var(--txt-dim);font-size:1.3rem;cursor:pointer;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center"><i class="ph-bold ph-x"></i></button>
+    </div>
+    <div class="wh-chart"><svg id="wh-svg"></svg></div>
+    <div class="wh-list" id="wh-list"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="modal-btn modal-btn-cancel" style="font-size:.8rem" onclick="clearWeightHistory()"><i class="ph-bold ph-trash"></i> Limpar histórico</button>
+      <button class="modal-btn modal-btn-confirm" onclick="closeWhModal()">Fechar</button>
+    </div>
+  </div>
+</div>
 <div class="sync-modal-overlay" id="sync-modal">
   <div class="sync-modal-box">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
@@ -556,7 +655,7 @@ function delCached(key){
 
 const saveActiveTab=k=>setCached('app_active_tab',k);
 const loadActiveTab=keys=>{const s=getCached('app_active_tab');return(s&&keys.includes(s))?s:keys[0]};
-const purgeEx=id=>['check_','weight_','note_','pr_'].forEach(p=>delCached(p+id));
+const purgeEx=id=>['check_','weight_','note_','pr_','wh_'].forEach(p=>delCached(p+id));
 const purgeTab=key=>workoutData[key]?.exercises.forEach(ex=>purgeEx(ex.id));
 
 /* ✅ OPT 6: Debounce no saveData — agrupa múltiplas escritas consecutivas
@@ -663,10 +762,13 @@ function renderAll(){
       const cur=parseFloat(wt.replace(',','.').replace(/[^0-9.]/g,''));
       const isPR=!isNaN(cur)&&cur>=prN&&prN>0;
       html+=`
-      <div class="exercise-card ${chk?'completed':''}" id="card_${ex.id}" style="animation-delay:${i*60}ms">
+      <div class="exercise-card ${chk?'completed':''}" id="card_${ex.id}" style="animation-delay:${i*60}ms"
+           draggable="false"
+           data-id="${ex.id}">
         <div class="shine"></div>
         <button class="btn-remove" onclick="removeEx('${currentTabKey}','${ex.id}')"><i class="ph-bold ph-x"></i></button>
         <button class="btn-edit-ex" onclick="editEx('${currentTabKey}','${ex.id}')"><i class="ph-bold ph-pencil-simple"></i></button>
+        <div class="drag-handle" title="Arrastar para reordenar"><i class="ph-bold ph-dots-six-vertical"></i></div>
         <label class="custom-checkbox">
           <input type="checkbox" onchange="toggleCheck('${ex.id}',this,event)" ${chk?'checked':''}>
           <span class="checkmark"></span>
@@ -679,11 +781,14 @@ function renderAll(){
           </span>
           ${note?`<div class="exercise-note-display" onclick="toggleNote('${ex.id}')">${note.replace(/\n/g,'<br>')}</div>`:''}
           <textarea class="exercise-note" id="note_${ex.id}" onchange="saveNote('${ex.id}',this.value)" placeholder="Dicas (ex: banco altura 3)...">${note}</textarea>
-          <div style="display:flex;gap:20px;margin-top:12px;flex-wrap:wrap">
+          <div style="display:flex;gap:20px;margin-top:12px;flex-wrap:wrap;align-items:flex-end">
             <div><span class="info-label">Séries</span><br><span class="info-value">${ex.reps}</span></div>
             <div>
               <span class="info-label" style="${isPR?'color:var(--gold)':''}">Peso ${isPR?'<i class="ph-fill ph-trophy" style="color:var(--gold)"></i>':''}</span><br>
-              <input type="text" id="weight_${ex.id}" class="weight-input ${isPR?'pr-active':''}" value="${wt}" onchange="saveWeight('${ex.id}',this.value)" placeholder="0kg">
+              <div style="display:flex;align-items:center;gap:6px">
+                <input type="text" id="weight_${ex.id}" class="weight-input ${isPR?'pr-active':''}" value="${wt}" onchange="saveWeight('${ex.id}',this.value)" placeholder="0kg">
+                <i class="ph-bold ph-chart-line-up" onclick="openWhModal('${ex.id}','${ex.name.replace(/'/g,"\\'")}')" title="Ver histórico de cargas" style="cursor:pointer;color:var(--txt-dim);font-size:1rem;transition:color .2s" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--txt-dim)'"></i>
+              </div>
             </div>
             <div><span class="info-label">Pausa</span><br>
               <span class="info-value ${ex.time!=='Nec.'?'timer-trigger':''}" onclick="startTimer('${ex.time}')">${ex.time}</span>
@@ -693,7 +798,7 @@ function renderAll(){
       </div>`;
     });
   }
-  container.innerHTML=html;updateProgressBar();
+  container.innerHTML=html;updateProgressBar();initDragDrop();
 }
 
 function showWorkout(key,e){
@@ -738,7 +843,22 @@ function updateProgressBar(){
 function saveWeight(id,val){
   setCached('weight_'+id,val);
   const num=parseFloat(val.replace(',','.').replace(/[^0-9.]/g,''));
-  if(!isNaN(num)){const pr=parseFloat(getCached('pr_'+id))||0;if(num>pr){setCached('pr_'+id,String(num));showToast('🏆 Novo recorde pessoal!')}}
+  if(!isNaN(num)&&num>0){
+    // Registra no histórico de cargas
+    const histKey='wh_'+id;
+    const wh=JSON.parse(getCached(histKey)||'[]');
+    const today=new Date().toISOString().slice(0,10);
+    // Atualiza ou adiciona entrada do dia atual
+    const todayIdx=wh.findIndex(e=>e.d===today);
+    if(todayIdx>=0) wh[todayIdx].v=num;
+    else wh.push({d:today,v:num});
+    // Mantém só os últimos 60 registros
+    if(wh.length>60) wh.splice(0,wh.length-60);
+    setCached(histKey,JSON.stringify(wh));
+    // Detecta PR
+    const pr=parseFloat(getCached('pr_'+id))||0;
+    if(num>pr){setCached('pr_'+id,String(num));showToast('🏆 Novo recorde pessoal!')}
+  }
   renderAll();
 }
 function toggleNote(id){
@@ -790,7 +910,7 @@ function openHistory(){
 }
 
 function exportData(){
-  const w={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('weight_')||k.startsWith('note_')||k.startsWith('pr_')||k==='app_history')w[k]=getCached(k)}
+  const w={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('weight_')||k.startsWith('note_')||k.startsWith('pr_')||k.startsWith('wh_')||k==='app_history')w[k]=getCached(k)}
   const dl=document.createElement('a');dl.href="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify({workoutData,weights:w}));dl.download="backup_treino.json";dl.click();closeFabMobile();
 }
 function importData(event){
@@ -883,7 +1003,301 @@ async function importPDF(event){
   });
 }
 
-/* ── SYNC ── */
+/* ═══════════════════════════════════════════════════════════
+   TEMPLATES DE TREINO
+   ═══════════════════════════════════════════════════════════ */
+const TEMPLATES=[
+  {id:'push',icon:'💪',name:'Push (Empurrar)',desc:'Peito, Ombros, Tríceps',exercises:[
+    {name:'Supino reto barra',reps:'4x8-12',time:'2m'},{name:'Supino inclinado halteres',reps:'3x10-12',time:'1m30'},
+    {name:'Desenvolvimento militar',reps:'4x8-10',time:'2m'},{name:'Elevação lateral',reps:'4x12-15',time:'1m'},
+    {name:'Crossover cabo',reps:'3x12-15',time:'1m'},{name:'Tríceps corda',reps:'4x12',time:'1m'},
+    {name:'Tríceps testa',reps:'3x10-12',time:'1m30'}
+  ]},
+  {id:'pull',icon:'🏋️',name:'Pull (Puxar)',desc:'Costas, Bíceps, Posterior',exercises:[
+    {name:'Barra fixa',reps:'4x máx',time:'2m'},{name:'Remada curvada',reps:'4x8-10',time:'2m'},
+    {name:'Pulldown pegada aberta',reps:'3x12',time:'1m30'},{name:'Remada baixa cabo',reps:'3x12',time:'1m30'},
+    {name:'Rosca direta barra',reps:'4x10-12',time:'1m30'},{name:'Rosca martelo',reps:'3x12',time:'1m'},
+    {name:'Levantamento terra romeno',reps:'3x10',time:'2m'}
+  ]},
+  {id:'legs',icon:'🦵',name:'Pernas',desc:'Quadríceps, Posterior, Glúteos',exercises:[
+    {name:'Agachamento livre',reps:'4x8-10',time:'2m30'},{name:'Leg press 45°',reps:'4x12',time:'2m'},
+    {name:'Cadeira extensora',reps:'3x15',time:'1m30'},{name:'Mesa flexora',reps:'4x12',time:'1m30'},
+    {name:'Stiff halteres',reps:'3x12',time:'1m30'},{name:'Elevação pélvica',reps:'4x15',time:'1m'},
+    {name:'Panturrilha em pé',reps:'4x falha',time:'1m'}
+  ]},
+  {id:'upper',icon:'🤸',name:'Superior',desc:'Peito, Costas, Ombros, Braços',exercises:[
+    {name:'Supino reto',reps:'4x8-10',time:'2m'},{name:'Remada curvada',reps:'4x8-10',time:'2m'},
+    {name:'Desenvolvimento halteres',reps:'3x10',time:'1m30'},{name:'Pulldown',reps:'3x12',time:'1m30'},
+    {name:'Elevação lateral',reps:'3x15',time:'1m'},{name:'Rosca alternada',reps:'3x12',time:'1m'},
+    {name:'Tríceps corda',reps:'3x12',time:'1m'}
+  ]},
+  {id:'lower',icon:'⚡',name:'Inferior',desc:'Glúteos, Posterior, Quadríceps',exercises:[
+    {name:'Agachamento búlgaro',reps:'4x10 cada',time:'2m'},{name:'Levantamento terra',reps:'4x6-8',time:'3m'},
+    {name:'Afundo caminhando',reps:'3x12 cada',time:'1m30'},{name:'Cadeira abdutora',reps:'3x15',time:'1m'},
+    {name:'Leg curl deitado',reps:'4x12',time:'1m30'},{name:'Panturrilha sentada',reps:'4x falha',time:'1m'}
+  ]},
+  {id:'fullbody',icon:'🔥',name:'Full Body',desc:'Corpo todo — 3x/semana',exercises:[
+    {name:'Agachamento',reps:'3x10',time:'2m'},{name:'Supino reto',reps:'3x10',time:'2m'},
+    {name:'Remada curvada',reps:'3x10',time:'2m'},{name:'Desenvolvimento',reps:'3x10',time:'1m30'},
+    {name:'Rosca direta',reps:'3x12',time:'1m'},{name:'Tríceps corda',reps:'3x12',time:'1m'},
+    {name:'Panturrilha em pé',reps:'3x falha',time:'1m'}
+  ]},
+  {id:'hiit',icon:'🏃',name:'HIIT / Funcional',desc:'Circuito de alta intensidade',exercises:[
+    {name:'Burpee',reps:'4x10',time:'45s'},{name:'Agachamento jump',reps:'4x15',time:'45s'},
+    {name:'Flexão',reps:'4x máx',time:'45s'},{name:'Mountain climber',reps:'4x30s',time:'30s'},
+    {name:'Afundo com salto',reps:'3x10 cada',time:'45s'},{name:'Prancha',reps:'4x45s',time:'30s'}
+  ]},
+  {id:'arms',icon:'💥',name:'Braços',desc:'Bíceps e Tríceps',exercises:[
+    {name:'Rosca direta barra',reps:'4x10-12',time:'1m30'},{name:'Rosca alternada',reps:'3x12',time:'1m'},
+    {name:'Rosca Scott',reps:'3x12',time:'1m30'},{name:'Rosca martelo cabo',reps:'3x15',time:'1m'},
+    {name:'Tríceps testa',reps:'4x10-12',time:'1m30'},{name:'Tríceps francês polia',reps:'3x12',time:'1m'},
+    {name:'Mergulho em banco',reps:'3x máx',time:'1m'}
+  ]}
+];
+
+function openTemplatesModal(){
+  closeFabMobile();
+  const grid=document.getElementById('tpl-grid');
+  grid.innerHTML=TEMPLATES.map(t=>`
+    <div class="tpl-card" onclick="applyTemplate('${t.id}')">
+      <div class="tpl-card-icon">${t.icon}</div>
+      <div class="tpl-card-name">${t.name}</div>
+      <div class="tpl-card-count">${t.desc} · ${t.exercises.length} exercícios</div>
+    </div>`).join('');
+  document.getElementById('templates-modal').style.display='flex';
+}
+function closeTemplatesModal(){document.getElementById('templates-modal').style.display='none'}
+
+function applyTemplate(tplId){
+  const tpl=TEMPLATES.find(t=>t.id===tplId);if(!tpl)return;
+  closeTemplatesModal();
+  openInputModal(`Nome para "${tpl.name}"`, 'Ex: Treino A', tpl.name, (name)=>{
+    if(!name.trim())return;
+    const id='treino'+Date.now();
+    workoutData[id]={
+      label:name.trim(),
+      title:name.trim(),
+      exercises:tpl.exercises.map((ex,i)=>({
+        id:`${tplId}_${i}_${Date.now()}`,
+        name:ex.name, reps:ex.reps, time:ex.time, link:''
+      }))
+    };
+    saveData();currentTabKey=id;saveActiveTab(id);renderTabs();renderAll();
+    showToast(`✅ Template "${tpl.name}" criado!`);
+  });
+}
+
+function useBlankTab(){
+  closeTemplatesModal();
+  openInputModal('Nova aba em branco','Ex: Pernas, Glúteos…','',(n)=>{
+    if(!n.trim())return;
+    const id='treino'+Date.now();
+    workoutData[id]={label:n.trim(),title:n.trim(),exercises:[]};
+    saveData();currentTabKey=id;saveActiveTab(id);renderTabs();renderAll();
+  });
+}
+
+document.getElementById('templates-modal').addEventListener('click',function(e){if(e.target===this)closeTemplatesModal()});
+
+/* ═══════════════════════════════════════════════════════════
+   DRAG AND DROP — reordenação de exercícios
+   ═══════════════════════════════════════════════════════════ */
+let _dragSrcId=null;
+
+function initDragDrop(){
+  const cards=document.querySelectorAll('#main-container .exercise-card');
+  cards.forEach(card=>{
+    const handle=card.querySelector('.drag-handle');
+    if(!handle)return;
+
+    // Desktop: drag via HTML5 API a partir da alça
+    handle.addEventListener('mousedown',()=>{ card.setAttribute('draggable','true'); });
+    handle.addEventListener('mouseleave',()=>{ if(!_dragSrcId) card.setAttribute('draggable','false'); });
+
+    card.addEventListener('dragstart',e=>{
+      _dragSrcId=card.dataset.id;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',_dragSrcId);
+    });
+    card.addEventListener('dragend',()=>{
+      card.classList.remove('dragging');
+      card.setAttribute('draggable','false');
+      document.querySelectorAll('.exercise-card').forEach(c=>c.classList.remove('drag-over'));
+      _dragSrcId=null;
+    });
+    card.addEventListener('dragover',e=>{
+      e.preventDefault();e.dataTransfer.dropEffect='move';
+      if(card.dataset.id!==_dragSrcId) card.classList.add('drag-over');
+    });
+    card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
+    card.addEventListener('drop',e=>{
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      const targetId=card.dataset.id;
+      if(!_dragSrcId||_dragSrcId===targetId)return;
+      reorderExercises(_dragSrcId,targetId);
+    });
+
+    // Mobile: touch drag
+    let touchDragEl=null,touchClone=null,touchTargetId=null;
+    handle.addEventListener('touchstart',e=>{
+      e.preventDefault();
+      _dragSrcId=card.dataset.id;
+      touchDragEl=card;
+      card.classList.add('dragging');
+      // Cria clone visual
+      touchClone=card.cloneNode(true);
+      touchClone.style.cssText=`position:fixed;z-index:9999;opacity:.85;pointer-events:none;
+        width:${card.offsetWidth}px;border-radius:20px;transform:scale(1.03);
+        box-shadow:0 20px 50px rgba(0,0,0,.5);transition:none`;
+      document.body.appendChild(touchClone);
+    },{passive:false});
+
+    handle.addEventListener('touchmove',e=>{
+      e.preventDefault();
+      const t=e.touches[0];
+      if(touchClone){
+        touchClone.style.left=(t.clientX-touchClone.offsetWidth/2)+'px';
+        touchClone.style.top=(t.clientY-80)+'px';
+      }
+      // Detecta card alvo
+      touchClone&&(touchClone.style.display='none');
+      const el=document.elementFromPoint(t.clientX,t.clientY);
+      touchClone&&(touchClone.style.display='');
+      const targetCard=el?.closest('.exercise-card');
+      document.querySelectorAll('.exercise-card').forEach(c=>c.classList.remove('drag-over'));
+      if(targetCard&&targetCard.dataset.id!==_dragSrcId){
+        targetCard.classList.add('drag-over');
+        touchTargetId=targetCard.dataset.id;
+      } else touchTargetId=null;
+    },{passive:false});
+
+    handle.addEventListener('touchend',()=>{
+      card.classList.remove('dragging');
+      touchClone?.remove(); touchClone=null;
+      document.querySelectorAll('.exercise-card').forEach(c=>c.classList.remove('drag-over'));
+      if(_dragSrcId&&touchTargetId&&_dragSrcId!==touchTargetId)
+        reorderExercises(_dragSrcId,touchTargetId);
+      _dragSrcId=null;touchTargetId=null;
+    });
+  });
+}
+
+function reorderExercises(srcId,targetId){
+  const exes=workoutData[currentTabKey].exercises;
+  const si=exes.findIndex(e=>e.id===srcId);
+  const ti=exes.findIndex(e=>e.id===targetId);
+  if(si<0||ti<0)return;
+  const [moved]=exes.splice(si,1);
+  exes.splice(ti,0,moved);
+  saveData();renderAll();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HISTÓRICO DE CARGAS
+   ═══════════════════════════════════════════════════════════ */
+let _whCurrentId=null;
+
+function openWhModal(exId,exName){
+  _whCurrentId=exId;
+  document.getElementById('wh-modal-title').textContent=exName;
+  const pr=parseFloat(getCached('pr_'+exId))||0;
+  document.getElementById('wh-modal-pr').textContent=pr>0?`🏆 Recorde: ${pr} kg`:'Sem recorde ainda';
+  renderWhModal(exId);
+  document.getElementById('wh-modal').style.display='flex';
+}
+function closeWhModal(){document.getElementById('wh-modal').style.display='none';_whCurrentId=null}
+document.getElementById('wh-modal').addEventListener('click',function(e){if(e.target===this)closeWhModal()});
+
+function renderWhModal(exId){
+  const wh=JSON.parse(getCached('wh_'+exId)||'[]').sort((a,b)=>a.d.localeCompare(b.d));
+  const pr=parseFloat(getCached('pr_'+exId))||0;
+
+  // ── SVG mini-chart ──
+  const svg=document.getElementById('wh-svg');
+  svg.innerHTML='';
+  if(wh.length>=2){
+    const W=svg.parentElement.clientWidth||340, H=110;
+    const vals=wh.map(e=>e.v);
+    const minV=Math.min(...vals), maxV=Math.max(...vals);
+    const range=maxV-minV||1;
+    const pts=wh.map((e,i)=>{
+      const x=10+(W-20)*(i/(wh.length-1));
+      const y=H-10-(H-20)*((e.v-minV)/range);
+      return{x,y,v:e.v,d:e.d,isPR:e.v>=pr&&pr>0};
+    });
+    // Área preenchida
+    const area=['M',pts[0].x,pts[0].y,...pts.slice(1).flatMap(p=>['L',p.x,p.y]),'L',pts[pts.length-1].x,H,'L',pts[0].x,H,'Z'].join(' ');
+    const areaEl=document.createElementNS('http://www.w3.org/2000/svg','path');
+    areaEl.setAttribute('d',area);
+    areaEl.setAttribute('fill','rgba(56,189,248,0.08)');
+    svg.appendChild(areaEl);
+    // Linha
+    const lineD=['M',pts[0].x,pts[0].y,...pts.slice(1).flatMap(p=>['L',p.x,p.y])].join(' ');
+    const lineEl=document.createElementNS('http://www.w3.org/2000/svg','path');
+    lineEl.setAttribute('d',lineD);
+    lineEl.setAttribute('fill','none');
+    lineEl.setAttribute('stroke','var(--primary)');
+    lineEl.setAttribute('stroke-width','2');
+    lineEl.setAttribute('stroke-linecap','round');
+    lineEl.setAttribute('stroke-linejoin','round');
+    svg.appendChild(lineEl);
+    // Pontos
+    pts.forEach(p=>{
+      const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+      const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',p.x);c.setAttribute('cy',p.y);c.setAttribute('r','5');
+      c.setAttribute('fill',p.isPR?'var(--gold)':'var(--primary)');
+      c.setAttribute('stroke','var(--surface2)');c.setAttribute('stroke-width','2');
+      const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x',p.x);t.setAttribute('y',p.y-10);
+      t.setAttribute('text-anchor','middle');t.setAttribute('font-size','9');
+      t.setAttribute('fill',p.isPR?'var(--gold)':'var(--txt-dim)');
+      t.setAttribute('font-family','Space Grotesk, sans-serif');
+      t.textContent=p.v+'kg';
+      g.appendChild(c);g.appendChild(t);svg.appendChild(g);
+    });
+    svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  } else {
+    svg.innerHTML='';
+  }
+
+  // ── Lista ──
+  const list=document.getElementById('wh-list');
+  if(!wh.length){
+    list.innerHTML='<div class="wh-empty">Nenhum peso registrado ainda.<br>Digite um valor no campo Peso para começar.</div>';
+    return;
+  }
+  list.innerHTML=[...wh].reverse().map((e,i)=>`
+    <div class="wh-entry">
+      <span class="wh-entry-date">${formatDate(e.d)}</span>
+      <span class="wh-entry-val ${e.v>=pr&&pr>0?'wh-pr':''}">${e.v} kg ${e.v>=pr&&pr>0?'🏆':''}</span>
+      <button class="wh-del-btn" onclick="deleteWhEntry('${exId}',${wh.length-1-i})" title="Remover"><i class="ph-bold ph-trash"></i></button>
+    </div>`).join('');
+}
+
+function formatDate(iso){
+  const[y,m,d]=iso.split('-');return`${d}/${m}/${y}`;
+}
+
+function deleteWhEntry(exId,idx){
+  const wh=JSON.parse(getCached('wh_'+exId)||'[]');
+  wh.splice(idx,1);
+  setCached('wh_'+exId,JSON.stringify(wh));
+  renderWhModal(exId);
+}
+
+function clearWeightHistory(){
+  if(!_whCurrentId)return;
+  openConfirmModal('Limpar histórico?','Todos os registros de peso serão apagados.',()=>{
+    delCached('wh_'+_whCurrentId);
+    renderWhModal(_whCurrentId);
+    showToast('Histórico limpo ✓');
+  });
+}
+
+/* ── também inclui wh_ no backup de exportação ── */
 function checkSyncOnLoad(){
   try{const hash=window.location.hash;if(!hash.startsWith('#sync='))return;const enc=hash.replace('#sync=','');if(!enc)return;history.replaceState(null,'',window.location.pathname);setTimeout(()=>{openSyncModal();switchSyncTab('import');document.getElementById('import-paste').value='training-pro://data?v=1&d='+enc;showConfirmSyncImport(enc)},400)}catch(e){}
 }
@@ -891,7 +1305,7 @@ function showConfirmSyncImport(enc){openConfirmModal('Importar treino sincroniza
 function buildSyncPayload(){
   const iW=document.getElementById('opt-weights')?.checked??true,iN=document.getElementById('opt-notes')?.checked??true,iH=document.getElementById('opt-history')?.checked??false;
   const pl={w:workoutData};
-  if(iW||iN){pl.ls={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(iW&&(k.startsWith('weight_')||k.startsWith('pr_')))pl.ls[k]=getCached(k);if(iN&&k.startsWith('note_'))pl.ls[k]=getCached(k)}}
+  if(iW||iN){pl.ls={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(iW&&(k.startsWith('weight_')||k.startsWith('pr_')||k.startsWith('wh_')))pl.ls[k]=getCached(k);if(iN&&k.startsWith('note_'))pl.ls[k]=getCached(k)}}
   if(iH){const h=getCached('app_history');if(h)pl.h=JSON.parse(h)}
   return btoa(unescape(encodeURIComponent(JSON.stringify(pl))));
 }
